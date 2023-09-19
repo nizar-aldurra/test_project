@@ -19,7 +19,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
 
   Future<void> _onPostsLoad(PostsLoad event, Emitter<PostsState> emit) async {
     emit(PostsLoading());
-     var response = await postsRepository.getPosts();
+     var response = await postsRepository.getPosts(event.page);
      // try{
       List<Post> posts = (response['data']['items'].map<Post>((e) => Post.fromMap(e))).toList();
       emit(PostsSuccess(posts));

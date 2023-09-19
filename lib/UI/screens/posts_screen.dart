@@ -15,9 +15,13 @@ class PostsScreen extends StatefulWidget {
 }
 
 class _PostsScreenState extends State<PostsScreen> {
+  final ScrollController scrollController = ScrollController();
+  int page = 1;
+
   @override
   void initState() {
-    context.read<PostsBloc>().add(PostsLoad());
+    context.read<PostsBloc>().add(PostsLoad(page));
+    scrollController.addListener(_scrollListener);
     super.initState();
   }
 
@@ -47,7 +51,10 @@ class _PostsScreenState extends State<PostsScreen> {
                         'Add Post',
                         style: TextStyle(color: Colors.white),
                       ),
-                      Icon(Icons.add,color: Colors.white,),
+                      Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      ),
                     ],
                   ),
                 ),
@@ -55,7 +62,7 @@ class _PostsScreenState extends State<PostsScreen> {
             ),
             body: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: PostsWidget(posts),
+              child: PostsWidget(scrollController, posts),
             ),
           );
         }
@@ -73,5 +80,13 @@ class _PostsScreenState extends State<PostsScreen> {
         );
       }
     });
+  }
+
+  void _scrollListener() {
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
+      page=page+1;
+      context.read<PostsBloc>().add(PostsLoad(page));
+    }
   }
 }
