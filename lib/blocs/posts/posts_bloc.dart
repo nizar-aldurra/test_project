@@ -21,8 +21,8 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     emit(PostsLoading());
      var response = await postsRepository.getPosts();
      // try{
-      print('failed response : ${response['data']['items'][0]}');
-      List<Post> posts = (response['data']['items'][0].map((e) => Post.fromMap(e))).toList();
+      print('failed response : ${(response['data']['items'].map<Post>((e) => Post.fromMap(e)))}');
+      List<Post> posts = (response['data']['items'].map<Post>((e) => Post.fromMap(e))).toList();
       emit(PostsSuccess(posts));
     // } catch(e) {
     //   print('failed response : ${response['data']['items'][0]} \n $e');
