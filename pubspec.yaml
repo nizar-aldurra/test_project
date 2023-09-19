@@ -31,7 +31,8 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc:
-  http: 
+  http:
+  equatable: 
 
 
 
