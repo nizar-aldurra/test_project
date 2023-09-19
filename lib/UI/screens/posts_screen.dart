@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:maaly_alkhayr_test_project/UI/widgets/posts_widget.dart';
 
 import '../../blocs/posts/posts_bloc.dart';
 import '../../models/post.dart';
@@ -28,21 +29,34 @@ class _PostsScreenState extends State<PostsScreen> {
       } else if (state is PostsSuccess) {
         List<Post> posts = state.posts;
         if (posts.isEmpty) {
-          return const Center(
-            child: Text('No Posts'),
+          return const Scaffold(
+            body: Center(
+              child: Text('No Posts'),
+            ),
           );
         } else {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListView.builder(
-                itemCount: posts.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    child: Text(
-                      posts[index].content,
-                    ),
-                  );
-                }),
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('All Posts'),
+              actions: [
+                TextButton(
+                  onPressed: () {},
+                  child: const Row(
+                    children: [
+                      Text(
+                        'Add Post',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      Icon(Icons.add,color: Colors.white,),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            body: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: PostsWidget(posts),
+            ),
           );
         }
       } else if (state is PostsFailure) {

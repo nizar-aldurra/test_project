@@ -32,7 +32,9 @@ dependencies:
     sdk: flutter
   flutter_bloc:
   http:
-  equatable: 
+  equatable:
+  cached_network_image:
+  shared_preferences:
 
 
 
