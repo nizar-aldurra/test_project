@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:maaly_alkhayr_test_project/UI/widgets/posts_widget.dart';
+import 'package:maaly_alkhayr_test_project/UI/screens/add_post_screen.dart';
+import 'package:maaly_alkhayr_test_project/UI/widgets/posts_listview.dart';
 
 import '../../blocs/posts/posts_bloc.dart';
 import '../../models/post.dart';
@@ -16,11 +17,9 @@ class PostsScreen extends StatefulWidget {
 
 class _PostsScreenState extends State<PostsScreen> {
   final ScrollController scrollController = ScrollController();
-  int page = 1;
 
   @override
   void initState() {
-    context.read<PostsBloc>().add(PostsLoad(page));
     scrollController.addListener(_scrollListener);
     super.initState();
   }
@@ -28,9 +27,9 @@ class _PostsScreenState extends State<PostsScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PostsBloc, PostsState>(builder: (context, state) {
-      if (state is PostsInitial || state is PostsLoading) {
+      if (state is PostInitialState || state is PostLoadingState) {
         return const Scaffold(body: Center(child: CircularProgressIndicator()));
-      } else if (state is PostsSuccess) {
+      } else if (state is PostLoadedState) {
         List<Post> posts = state.posts;
         if (posts.isEmpty) {
           return const Scaffold(
@@ -44,7 +43,9 @@ class _PostsScreenState extends State<PostsScreen> {
               title: const Text('All Posts'),
               actions: [
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(AddPostScreen.routName);
+                  },
                   child: const Row(
                     children: [
                       Text(
@@ -62,11 +63,11 @@ class _PostsScreenState extends State<PostsScreen> {
             ),
             body: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: PostsWidget(scrollController, posts),
+              child: PostsListView(scrollController, posts,state),
             ),
           );
         }
-      } else if (state is PostsFailure) {
+      } else if (state is PostErrorState) {
         return Scaffold(
           body: Center(
             child: Text(state.error),
@@ -85,8 +86,7 @@ class _PostsScreenState extends State<PostsScreen> {
   void _scrollListener() {
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
-      page=page+1;
-      context.read<PostsBloc>().add(PostsLoad(page));
+      context.read<PostsBloc>().add(LoadMorePostsEvent());
     }
   }
 }

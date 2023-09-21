@@ -31,6 +31,25 @@ class Media {
     size = map['size'];
   }
 
+  Map<String, dynamic> toMap() {
+    Map<String,dynamic> map={
+      'src_url': srcUrl,
+      'media_type': mediaType,
+      'mime_type': mimeType,
+      'size': size,
+    };
+    if(srcIcon!=null||srcIcon!.isNotEmpty){
+      map['src_icon'] = srcIcon;
+    }
+    if(srcThum!=null||srcThum!.isNotEmpty){
+      map['src_thum'] = srcThum;
+    }
+    if(mediaType == 'Video'){
+      map['width'] = width;
+      map['height'] = height;
+    }
+    return map;
+  }
   @override
   String toString() {
     return 'Media { srcUrl: $srcUrl';

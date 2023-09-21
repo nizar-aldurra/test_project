@@ -31,10 +31,14 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc:
+  firebase_core:
+  firebase_storage:
   http:
   equatable:
   cached_network_image:
   shared_preferences:
+  image_picker:
+  path:
 
 
 

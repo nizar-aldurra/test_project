@@ -1,22 +1,25 @@
 part of 'posts_bloc.dart';
 
 abstract class PostsState extends Equatable {
-  const PostsState();
   @override
   List<Object> get props => [];
 }
 
-class PostsInitial extends PostsState {
+class PostInitialState extends PostsState {
 }
-class PostsLoading extends PostsState {
-}
-
-class PostsSuccess extends PostsState {
-  List<Post> posts;
-  PostsSuccess(this.posts);
+class PostLoadingState extends PostsState {
 }
 
-class PostsFailure extends PostsState {
-  String error;
-  PostsFailure(this.error);
+class PostLoadedState extends PostsState {
+  final List<Post> posts;
+  final bool hasReachedMax;
+  PostLoadedState({required this.posts,required this.hasReachedMax});
+
+  @override
+  List<Object> get props => [posts,hasReachedMax];
+}
+
+class PostErrorState extends PostsState {
+  final String error;
+  PostErrorState({required this.error});
 }
